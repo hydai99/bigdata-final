@@ -25,18 +25,18 @@ To accomplish that, we will use KMeans and BFR algorithms to cluster the data po
 
 ### BFR
 
-1. Utilizing Spark, retrieve the data points from a file.
+1. Utilizing Spark, retrieve the data points from `Data.csv`.
 2. Initialize K centroids for K-Means using a small random sample of the data points and Euclidean distance as the similarity measurement.
 3. Generate DS clusters by applying K-Means to the data points obtained in step 2, and discard the points, keeping only statistics.
 4. K centroids have been initialized in DS, resulting in K clusters.
 5. Run K-Means on the remaining data points, using a large number of clusters (e.g., 5 times K) to produce CS clusters (with more than one point) and RS clusters (with only one point).
-6. Retrieve the next set of data points from a file.
+6. Retrieve the next set of data points from `Data.csv`.
 7. Calculate the Mahalanobis Distance between new points and the clusters in DS, and assign them to the nearest DS cluster if the distance is less than \alpha\sqrt{d}.
 8. If new points are not assigned to any DS clusters, calculate their Mahalanobis Distance and assign them to the nearest CS cluster if the distance is less than \alpha\sqrt{d}.
 9. If new points are not assigned to any clusters in DS or CS, assign them to RS clusters.
 10. Combine the points in RS clusters by applying K-Means with a large number of clusters (e.g., 5 times K) to generate CS clusters (with more than one point) and RS clusters (with only one point).
 11. Merge CS clusters that have a Mahalanobis Distance less than \alpha\sqrt{d}.
-12. Repeat above steps for all files.
+12. Repeat above steps for all `Data.csv`.
 13. If this is the final iteration (after processing the last chunk of data points), merge CS clusters with DS clusters that have a Mahalanobis Distance less than \alpha\sqrt{d}. (\alpha is a hyper-parameter.)
 
 ## Result
