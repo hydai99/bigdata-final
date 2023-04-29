@@ -9,8 +9,9 @@ The problem we are trying to solve is to cluster a dataset using cluster algorit
 
 The dataset appears to represent a genomic sequence. It’s first column 'contigname' is likely the name of the sequence or contig, and the subsequent columns (feat_0 to feat_31) are various features associated with that sequence. 
 
-Data.csv: 1512372 rows × 33 columns
-Label.csv: 1074858 rows × 2 columns
+- Data.csv: 1512372 rows × 33 columns
+
+- Label.csv: 1074858 rows × 2 columns
 
 ## Method
 
