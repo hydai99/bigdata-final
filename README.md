@@ -45,3 +45,21 @@ obtain the predicted cluster assignments for each data point.
 | Kmeans | 0.26 | 10517988K   |
 | BFR    | 0.04 | 9808216K    |
 
+
+## Repo Directory Structure
+
+Details:
+
+- README.md: overall introduction and information of the project
+- milestone1.py: Code for milestone1, using Kmeans algorithm to cluster data
+- milestone2.py: Code for milestone2, using BFR algorithm to cluster data
+- cal_ari.py: Code to calculate ari score for milestone2
+- slide.pdf: Slides for final presentation
+
+## Contact Info
+
+- Hongyu Dai hongyu.dai@vanderbilt.edu
+
+- Zihan Fang zihan.fang@vanderbilt.edu
+
+- Jingyuan Wu jingyuan.wu@vanderbilt.edu
