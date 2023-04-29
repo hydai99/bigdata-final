@@ -3,15 +3,13 @@
 > Project for Vanderbilt University, Big Data Scaling
 ## Problem
 
-The problem we are trying to solve is to cluster a dataset using cluster algorithms and identify patterns and similarities within the dataset.
+Employ two clustering algorithms to analyze a sizable dataset for detecting patterns and similarities, and contrast the dissimilarity in peak memory usage and accuracy using the ARI metric.
 
 ## Data
 
-The dataset appears to represent a genomic sequence. It’s first column 'contigname' is likely the name of the sequence or contig, and the subsequent columns (feat_0 to feat_31) are various features associated with that sequence. 
+It seems that the dataset pertains to a genomic sequence, where the initial column labeled as 'contigname' denotes the name of the contig, while the following columns, labeled as feat_0 to feat_31, encompass distinct characteristics linked with the said sequence.
 
-- Data.csv: 1512372 rows × 33 columns
-
-- Label.csv: 1074858 rows × 2 columns
+The training dataset, named `Data.csv`, consists of 1512372 rows and 33 columns, while the ground truth label Y is provided in the `Label.csv` file, which contains 1074858 rows and 2 columns. This ground truth label Y is used to calculate the ARI.
 
 ## Method
 
@@ -19,23 +17,27 @@ To accomplish that, we will use KMeans and BFR algorithms to cluster the data po
 
 ### Kmeans
 
-1. Use Left join to merge the Data.csv and Label.csv on key contigname
-2. Separate the ground truth label Y come from label.csv and the features X using numpy arrays.
-3. Applied Kmeans with 745 clusters, which means we want to form 745 clusters, and random_state=2023 to ensure the reproducibility of the results.
-4. We fit the KMeans model to the feature matrix X using the fit method.
-obtain the predicted cluster assignments for each data point.
-5. Finally, we compute the ARI score using the ground truth labels and the predicted cluster excluding the items that are not in Y. The ARI is 0.26.
+1. To merge `Data.csv` and `Label.csv` on key contigname, use a Left join.
+2. Use numpy arrays to separate the features X and ground truth label Y from Label.csv.
+3. Apply Kmeans with 745 clusters to form clusters, and set random_state=2023 for reproducibility.
+4. Fit the KMeans model to feature matrix X using the fit method to obtain predicted cluster assignments for each data point.
+5. Compute the ARI score using ground truth labels and predicted clusters, excluding items not in Y. The resulting ARI score is 0.26.
 
 ### BFR
 
-1. Reads in a distributed data file using Spark.
-2. Processes the data by splitting it into smaller partitions for clustering.
-3. Uses the KMeans algorithm to cluster data points into two sets: Dense Set (DS) and Remaining Set (RS).
-4. In subsequent rounds, checks if data points belong to DS or RS and updates cluster statistics accordingly.
-5. Compressed Set (CS) merges small or close clusters and is repeated until no more merges are possible.
-6. Merges final CS and DS and any clusters that are close enough.
-7. Finally, the resulting clustering assignments for each data point are outputted.
-
+1. Utilizing Spark, retrieve the data points from a file.
+2. Initialize K centroids for K-Means using a small random sample of the data points and Euclidean distance as the similarity measurement.
+3. Generate DS clusters by applying K-Means to the data points obtained in step 2, and discard the points, keeping only statistics.
+4. K centroids have been initialized in DS, resulting in K clusters.
+5. Run K-Means on the remaining data points, using a large number of clusters (e.g., 5 times K) to produce CS clusters (with more than one point) and RS clusters (with only one point).
+6. Retrieve the next set of data points from a file.
+7. Calculate the Mahalanobis Distance between new points and the clusters in DS, and assign them to the nearest DS cluster if the distance is less than \alpha\sqrt{d}.
+8. If new points are not assigned to any DS clusters, calculate their Mahalanobis Distance and assign them to the nearest CS cluster if the distance is less than \alpha\sqrt{d}.
+9. If new points are not assigned to any clusters in DS or CS, assign them to RS clusters.
+10. Combine the points in RS clusters by applying K-Means with a large number of clusters (e.g., 5 times K) to generate CS clusters (with more than one point) and RS clusters (with only one point).
+11. Merge CS clusters that have a Mahalanobis Distance less than \alpha\sqrt{d}.
+12. Repeat above steps for all files.
+13. If this is the final iteration (after processing the last chunk of data points), merge CS clusters with DS clusters that have a Mahalanobis Distance less than \alpha\sqrt{d}. (\alpha is a hyper-parameter.)
 
 ## Result
 
@@ -51,9 +53,9 @@ obtain the predicted cluster assignments for each data point.
 Details:
 
 - README.md: overall introduction and information of the project
-- milestone1.py: Code for milestone1, using Kmeans algorithm to cluster data
-- milestone2.py: Code for milestone2, using BFR algorithm to cluster data
-- cal_ari.py: Code to calculate ari score for milestone2
+- milestone1.py: Code for milestone1, using Kmeans algorithm to cluster data (usage: python milestone1.py)
+- milestone2.py: Code for milestone2, using BFR algorithm to cluster data (usage: python milestone2.py input #_of_cluster output)
+- cal_ari.py: Code to calculate ari score for milestone2 (usage: python cal_ari.py)
 - slide.pdf: Slides for final presentation
 
 ## Contact Info
