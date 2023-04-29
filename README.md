@@ -54,7 +54,7 @@ Details:
 
 - README.md: overall introduction and information of the project
 - milestone1.py: Code for milestone1, using Kmeans algorithm to cluster data (**usage: python milestone1.py**)
-- milestone2.py: Code for milestone2, using BFR algorithm to cluster data (**usage: python milestone2.py input #_of_cluster output**)
+- milestone2.py: Code for milestone2, using BFR algorithm to cluster data (**usage: python milestone2.py  inputfile  #_of_cluster   outputfile**)
 - cal_ari.py: Code to calculate ari score for milestone2 (**usage: python cal_ari.py**)
 - slide.pdf: Slides for final presentation
 
